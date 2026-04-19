@@ -2,6 +2,8 @@
 
 SG_ID="sg-035ed7cc952446c58"
 AMI_ID="ami-0220d79f3f480ecf5"
+ZONE_ID="Z09699162XX0ZTAREEV6U"
+DOMAIN_NAME="dawsproject.online"
 
 for instance in $@
 do
@@ -20,6 +22,7 @@ INSTANCE_ID=$( aws ec2 run-instances \
             --query 'Reservations[].Instances[].PublicIpAddress' \
             --output text
         )
+        RECORD_NAME="$instance.$DOMAIN_NAME"
     else
         IP=$(
             aws ec2 describe-instances \
@@ -27,7 +30,32 @@ INSTANCE_ID=$( aws ec2 run-instances \
             --query 'Reservations[].Instances[].PrivateIpAddress' \
             --output text  
         )   
+        RECORD_NAME="$instance.$DOMAIN_NAME"
     fi 
 
     echo "IP Address=$IP"
+
+    aws route53 change-resource-record-sets \
+    --hosted-zone-id $ZONE_ID \
+    --change-batch '
+    {
+        "Comment":"Update records"
+        "Changes": [
+            {
+            "Action": "UPSERT",
+            "ResourceRecordSet": {
+                "Name": "'$RECORD_NAME'",
+                "Type": "A",
+                "TTL": 1,
+                "ResourceRecords": [
+                {
+                "Value": "'$IP'"
+                }
+                ]
+            }
+            }
+        ]
+    }'
+
+    echo "Record updated"
 done
