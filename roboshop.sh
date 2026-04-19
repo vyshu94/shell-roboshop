@@ -38,7 +38,7 @@ INSTANCE_ID=$( aws ec2 run-instances \
     aws route53 change-resource-record-sets \
     --hosted-zone-id $ZONE_ID \
     --change-batch '
-    {
+    { 
         "Comment":"Update records"
         "Changes": [
             {
@@ -55,7 +55,8 @@ INSTANCE_ID=$( aws ec2 run-instances \
             }
             }
         ]
-    }'
+    }
+    '
 
     echo "Record updated"
 done
