@@ -8,6 +8,7 @@ G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 SCRIPT_DIR=$PWD
+MONGODB_HOST=mongodb.dawsproject.online
 
 #check root user or not
 
@@ -71,3 +72,7 @@ systemctl enable catalogue &>>LOGS_FILE
 systemctl start catalogue
 VALIDATE $? "starting catalogue"
 
+cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
+dnf install mongodb-mongosh -y
+
+mongosh --host $MONGODB_HOST </app/db/master-data.js
