@@ -42,6 +42,7 @@ if [ $? -ne 0 ]; then
     VALIDATE $? "creating system user"
 else
     echo -e "Roboshop user already exists ... $Y Skipping $N..."
+fi
 
 mkdir -p /app
 VALIDATE $? "creating app directory"
