@@ -39,7 +39,7 @@ INSTANCE_ID=$( aws ec2 run-instances \
     --hosted-zone-id $ZONE_ID \
     --change-batch '
     { 
-        "Comment":"Update records"
+        "Comment":"Update records",
         "Changes": [
             {
             "Action": "UPSERT",
@@ -58,5 +58,5 @@ INSTANCE_ID=$( aws ec2 run-instances \
     }
     '
 
-    echo "Record updated"
+    echo "Record updated for $instance"
 done
