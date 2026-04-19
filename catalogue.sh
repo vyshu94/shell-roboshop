@@ -7,6 +7,7 @@ R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
+SCRIPT_DIR=$PWD
 
 #check root user or not
 
@@ -53,17 +54,20 @@ VALIDATE $? "Downloading Code"
 cd /app
 VALIDATE $? "Moving to app directory"
 
-unzip /tmp/catalogue.zip
+rm -rf /app/*
+VALIDATE $? "Removing the files in app folder"
+
+unzip /tmp/catalogue.zip &>>LOGS_FILE
 VALIDATE $? "unzip catalogue code"
 
-npm install
+npm install &>>LOGS_FILE
 VALIDATE $? "Installing dependencies"
 
-cp catalogue.service /etc/systemd/system/catalogue.service
+cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
 VALIDATE $? "Created systemctl service"
 
 systemctl daemon-reload
-systemctl enable catalogue
+systemctl enable catalogue &>>LOGS_FILE
 systemctl start catalogue
 VALIDATE $? "starting catalogue"
 
