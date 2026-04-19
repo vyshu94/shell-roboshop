@@ -53,7 +53,7 @@ VALIDATE $? "Downloading Code"
 cd /app
 VALIDATE $? "Moving to app directory"
 
-unxip /tmp/catalogue.zip
+unzip /tmp/catalogue.zip
 VALIDATE $? "unzip catalogue code"
 
 npm install
