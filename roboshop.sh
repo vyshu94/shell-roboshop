@@ -9,7 +9,7 @@ INSTANCE_ID=$( aws ec2 run-instances \
    --image-id $AMI_ID \
    --instance-type "t3.micro" \
    --security-group-ids $SG_ID \
-   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=$instance}]' \
+   --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" \
    --query 'Instances[0].InstanceId' \
    --output text )
 
